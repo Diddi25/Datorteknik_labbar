@@ -114,11 +114,13 @@ delay:
 while:
 	sle $t1, $t0, $0 #om t0 (a0) är =< 0 blir t3 1
 	bnez $t1, back	 #om det ovan är 1 tillbaka
+	nop
 	addi $t0, $t0, -1
 	addi $t2, $0, 0
 loop:
 	slti $t3, $t2, 750
 	beq $t3, $0, while
+	nop
 	addi $t2, $t2, 1
 	j loop
 	nop
