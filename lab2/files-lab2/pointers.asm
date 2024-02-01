@@ -48,7 +48,7 @@ work:
 # function copycodes()
 copycodes: #ADDRESSER: a0 = text1, a1 = list1, a2 = count
 loop:
-	lb	$t0,0($a0)	#laddar upp 8 bitar av text1
+	lb	$t0,0($a0)	#laddar upp 8 bitar som ligger på text1:s address
 	beq	$t0,$0,done #när hela texten är klar
 	sw	$t0,0($a1)	#sparar 8 bitar från t0 i addressen för list1
 
