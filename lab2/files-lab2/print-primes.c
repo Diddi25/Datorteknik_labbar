@@ -10,8 +10,14 @@
 #include <stdlib.h>
 
 #define COLUMNS 6
+int columnNumber = 1;
 
 void print_number(int n) {
+  if(columnNumber > COLUMNS) {
+        printf("\n");
+        columnNumber = 1;
+    }
+  columnNumber++;
   printf("%10d ", n);
 }
 
@@ -29,16 +35,10 @@ void print_primes(int n){
   // with the following formatting. Note that
   // the number of columns is stated in the define
   // COLUMNS
-  int columnNumber = 1;
   for(int i = 2; i<n; i++) {
     int isPrime = is_prime(i);
     if(isPrime > 0) {
-      if(columnNumber > COLUMNS) {
-        printf("\n");
-        columnNumber = 1;
-      }
       print_number(i);
-      columnNumber++;
     }
   }
 }
