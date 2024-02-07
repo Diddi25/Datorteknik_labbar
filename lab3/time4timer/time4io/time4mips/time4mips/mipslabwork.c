@@ -18,6 +18,8 @@ int mytime = 0x5957;
 
 char textstring[] = "text, more text, and even more text!";
 
+int timeoutcounter = 0;
+
 /* Interrupt Service Routine */
 void user_isr( void )
 {
@@ -64,12 +66,15 @@ void labwork( void )
 {
   volatile int* porte = (volatile int*) 0xbf886110;
   *porte &= ~0xff;
-  delay( 1000 );
-  time2string( textstring, mytime );
-  display_string( 3, textstring );
-  display_update();
-  tick( &mytime );
+  //delay( 1000 );
+  if(timeoutcounter == 10) {
+      time2string( textstring, mytime );
+      display_string( 3, textstring );
+      display_update();
+      tick( &mytime );
+      changeTimeWithToggles();
+      timeoutcounter = 0;
+  }
   *porte = *porte + 1;
-  changeTimeWithToggles();
   display_image(96, icon);
 }
