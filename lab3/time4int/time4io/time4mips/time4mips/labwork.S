@@ -10,6 +10,7 @@
   .global hexasc
   .global time2string
   .global delay
+  .global enable_interrupt
 .macro	PUSH reg
 	addi	$sp,$sp,-4
 	sw	\reg,0($sp)
@@ -98,5 +99,10 @@ time2string:
 	#sw $s1, 4($a0) # stores the word from $s1 onto the adress of 4($a0)
 	#POP ($s1) # resetting register $s1
 	#POP ($s0) # resetting register $s0
+	jr $ra
+	nop
+	
+enable_interrupt:
+	ei
 	jr $ra
 	nop

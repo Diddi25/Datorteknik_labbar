@@ -17,11 +17,14 @@
 int mytime = 0x5957;
 char textstring[] = "text, more text, and even more text!";
 int timeoutcounter = 0;
+int prime = 1234567;
 
 /* Interrupt Service Routine */
-void user_isr( void )
-{
-  return;
+void user_isr( void ) {
+  time2string( textstring, mytime );
+  display_string( 3, textstring );
+  display_update();
+  tick( &mytime );
 }
 
 /* Lab-specific initialization goes here */
@@ -42,6 +45,10 @@ void labinit( void )
 
   /* Bit 8 av IFS(0) kollar Timer 2 Interrupt Flag (T2IF) */
   IFS(0) &= ~0x00000100; // Behövs egentligen inte här
+
+  IEC(0) |= 0xffffffff;
+  IPC(2) |= 0xffffffff;
+
   return;
 }
 
@@ -70,23 +77,8 @@ void changeTimeWithToggles() {
 }
 
 /* This function is called repetitively from the main program */
-void labwork( void )
-{
-  volatile int* porte = (volatile int*) 0xbf886110;
-  *porte &= ~0xff;
-  //delay( 1000 );
-  if(IFS(0) & 0x00000100) {
-    timeoutcounter++;
-    if(timeoutcounter == 10) {
-      time2string( textstring, mytime );
-      display_string( 3, textstring );
-      display_update();
-      tick( &mytime );
-      timeoutcounter = 0;
-    }
-    IFS(0) &= ~0x00000100;
-  }
-  *porte = *porte + 1;
-  changeTimeWithToggles();
-  display_image(96, icon);
+void labwork( void ) {
+  prime = nextprime( prime );
+  display_string( 0, itoaconv( prime ) );
+  display_update();
 }
