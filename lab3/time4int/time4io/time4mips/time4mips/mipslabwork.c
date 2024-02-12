@@ -21,15 +21,27 @@ int prime = 1234567;
 
 /* Interrupt Service Routine */
 void user_isr( void ) {
-  time2string( textstring, mytime );
-  display_string( 3, textstring );
-  display_update();
-  tick( &mytime );
+  if(IFS(0) & 0x00000100) { //IFS interrupt flag för timer 2
+    timeoutcounter++;
+    if(timeoutcounter == 10) {
+      time2string( textstring, mytime );
+      display_string( 3, textstring );
+      display_update();
+      tick( &mytime );
+      timeoutcounter = 0;
+    }
+    IFS(0) &= ~0x00000100;
+  }
+  if(IFS(0) & 0x80){ // 0x 0000 0000 1000 0000 => 7:e biten
+    volatile int* porte = (volatile int*) 0xbf886110;
+    //*porte &= ~0xff;
+    *porte = *porte + 1;
+    IFS(0) &= ~0x80; //CLEAR INT1
+  }
 }
 
 /* Lab-specific initialization goes here */
-void labinit( void )
-{
+void labinit( void ) {
   volatile int* trise = (volatile int*) 0xbf886100; //sätter upp pointer till addressen för LEDS
   *trise &= ~0xff;
 
@@ -46,8 +58,14 @@ void labinit( void )
   /* Bit 8 av IFS(0) kollar Timer 2 Interrupt Flag (T2IF) */
   IFS(0) &= ~0x00000100; // Behövs egentligen inte här
 
-  IEC(0) |= 0xffffffff;
-  IPC(2) |= 0xffffffff;
+  IEC(0) |= 0x180; //enable interrupt for timer 2
+  //sets interrupt priority for timer 2 to highest
+
+  IPC(2) |= 0x0f; //0x 0000 0000 0001 1111 // 0b 1111 1111  1111 1111  1111 1111  1111 1111
+  //sätter prioritet 6 och subprioritet 3
+  // 6 = 110
+  // 3 = 11
+  IPC(1) |= 0x1b00; //0x 0000 0001 1011 0000
 
   return;
 }
