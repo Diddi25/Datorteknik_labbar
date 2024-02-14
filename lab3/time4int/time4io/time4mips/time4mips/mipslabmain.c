@@ -54,7 +54,7 @@ int main(void) {
 	/* SPI2CON bit ON = 1; */
 	SPI2CONSET = 0x8000;
 	
-	display_init();
+	display_init(); //kanske är till för att bara visa saker på skärmen, använder spi
 	display_string(0, "KTH/ICT lab");
 	display_string(1, "in Computer");
 	display_string(2, "Engineering");

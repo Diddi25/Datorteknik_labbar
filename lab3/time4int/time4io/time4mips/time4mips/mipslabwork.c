@@ -32,6 +32,7 @@ void user_isr( void ) {
     }
     IFS(0) &= ~0x00000100;
   }
+  //surprise
   if(IFS(0) & 0x80){ // 0x 0000 0000 1000 0000 => 7:e biten
     volatile int* porte = (volatile int*) 0xbf886110;
     //*porte &= ~0xff;
@@ -55,13 +56,15 @@ void labinit( void ) {
      100ms beräknas PR2 = 80 000 000 / 256 / 10 = 31 250) */
   PR2 = 31250; // 80M / 256 ger tiden i sekunder, 1/10s = 10
 
-  /* Bit 8 av IFS(0) kollar Timer 2 Interrupt Flag (T2IF) */
+  /* Bit 8 av IFS(0) kollar Timer 2 Interrupt Flag (T2IF) */ //also used in surprise
   IFS(0) &= ~0x00000100; // Behövs egentligen inte här
 
   IEC(0) |= 0x180; //enable interrupt for timer 2
   //sets interrupt priority for timer 2 to highest
 
+
   IPC(2) |= 0x0f; //0x 0000 0000 0001 1111 // 0b 1111 1111  1111 1111  1111 1111  1111 1111
+  // surprise
   //sätter prioritet 6 och subprioritet 3
   // 6 = 110
   // 3 = 11
@@ -100,3 +103,6 @@ void labwork( void ) {
   display_string( 0, itoaconv( prime ) );
   display_update();
 }
+
+// 0b 10101010 = 2 + 8 + 32 + 128
+// 0b 01 01 01 01 = 1 + 4 + 16 + 64

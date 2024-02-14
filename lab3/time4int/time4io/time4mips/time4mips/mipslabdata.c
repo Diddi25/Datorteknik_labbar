@@ -8,7 +8,10 @@
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
 #include "mipslab.h"  /* Declatations for these labs */
 
-char textbuffer[4][16];
+//32 rader
+//128 kolumner
+
+char textbuffer[4][16]; //1/page (4) 16 columner
 
 const uint8_t const font[] = {
 	0, 0, 0, 0, 0, 0, 0, 0,
