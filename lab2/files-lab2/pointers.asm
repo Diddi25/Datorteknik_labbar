@@ -16,7 +16,6 @@
 
 .data
 
-
 text1: 	  .asciiz "This is a string." #c=17, ci = 13, w=4
 text2:	  .asciiz "Yet another thing."
 
