@@ -5,6 +5,10 @@
 	add $v0, $0, $a0 #initieras till n
 	add $a2, $0, $a0 # a2 = a0 = 4
 	
+jump_if_0_or_1_fact:
+	beq $a0, $0, one_factorial_value
+	beq $a0, $a1, one_factorial_value
+	
 add_n_minus_one:
 	addi $a2, $a2, -1 #a2 = 3, 2, 1
 	beq  $a2, $a1, stop #a2 = 1 => stop
@@ -20,6 +24,9 @@ add_a3_times:
 	add $v0, $v0, $v1 #v0 = 4, 8, 12, 24
 	beq $0, $0, determine_if_a3_is_1
 	add $0, $0, $0 #måste ha meningslös op annars hazard :/
+
+one_factorial_value:
+	add $v0, $0, 1
 	
 stop: 
 	beq $0, $0, stop
