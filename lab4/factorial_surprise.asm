@@ -7,8 +7,8 @@
 	add $a2, $0, $a0 # a2 = a0 = 4
 	
 jump_if_0_or_1_fact:
-	#beq $a0, $0, one_factorial_value
-	#beq $a0, $a1, one_factorial_value
+	beq $a0, $0, one_factorial_value
+	beq $a0, $a1, one_factorial_value
 	
 determine_if_should_stop:
 	addi $v1, $v1, -1 #3, 2
@@ -20,7 +20,7 @@ add_n_minus_one:
 	add $0, $0, $0 #måste ha meningslös op annars hazard :/
 	
 one_factorial_value:
-	#add $v0, $0, 1
+	add $v0, $0, 1
 	
 stop: 
 	beq $0, $0, stop
